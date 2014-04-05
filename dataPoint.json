@@ -1,0 +1,16 @@
+{
+	"type" : "custom",
+	"data" : {
+		"title" : "askldaw.jg",
+		"description" : "Big blob"
+	},
+	"loc" : {
+		"type" : "points",
+		"coordinate" : [],
+		"altitude" : 99000
+	},
+	"created" : "DATE",
+	"ACTIVE" : "BOOLEAN",
+	"explicated" : "BOOLEAN",
+	"paid" : "BOOLEAN"
+}
