@@ -1,9 +1,9 @@
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-shell-spawn');
   grunt.initConfig({
     pkg: {
-      main: grunt.file.readJSON("../src/package.json");
+      main: grunt.file.readJSON("../src/package.json")
     },
     uglify: {
       main: {
@@ -19,14 +19,25 @@ module.exports = function(grunt) {
       }
     },
     shell: {
-      main: {
-        command: [
-          "node ../lib/main/index.js",
-          "node ../lib/digger/index.js",
-          "node ../lib/finder/index.js",
-        ]
+      proxy: {
+        execOptions: {
+          detached: true
+        },
+        command: "node ../lib/main/index.js"
+      },
+      digger: {
+        execOptions: {
+          detached: true
+        },
+        command: "node ../lib/digger/index.js"
+      },
+      finder: {
+        execOptions: {
+          detached: true
+        },
+        command: "node ../lib/finder/index.js"
       }
     }
   })
-  grunt.registerTask('default', [ 'uglify:main', 'shell:main']);
+  grunt.registerTask('default', ['uglify:main', 'shell:proxy', 'shell:digger', 'shell:finder']);
 }
