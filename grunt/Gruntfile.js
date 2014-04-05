@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+  grunt.file.setBase('..');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-shell-spawn');
   grunt.initConfig({
