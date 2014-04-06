@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell-spawn');
   grunt.initConfig({
     pkg: {
-      main: grunt.file.readJSON("../src/package.json")
+      main: grunt.file.readJSON("src/package.json")
     },
     uglify: {
       main: {
@@ -13,9 +13,9 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          cwd: '../src',
+          cwd: 'src',
           src: '**/*.js',
-          dest: '../lib/js'
+          dest: 'lib/js'
         }]
       }
     },
