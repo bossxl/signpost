@@ -8,7 +8,7 @@ exports.map = function(qc){
     .command('GET')
       .dcf(function(data, qc){
         data.log("#request data #v0 #GET")
-        data.res.end('Default action is in use');
+        data.res.end('hey')
         return qc.STACK_CONTINUE
       })
 }

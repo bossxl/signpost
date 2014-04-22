@@ -6,6 +6,11 @@ var http = require('http')
   , _ = require('underscore')
   , actions = require('./server/actions')
   , QuickConnect = require('qcnode').QuickConnect
+try {
+  actions = require(process.cwd() + '/actions.js')
+} catch(e){
+  // Put a message here to tell which action js is being used.
+}
 
 function HiddenState(){
   this._state = 0
