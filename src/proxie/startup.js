@@ -1,4 +1,4 @@
-var Server = require('./server')
+var Server = require('../lib/server')
 
 exports.map = function(qc){
   qc.command('start proxie')

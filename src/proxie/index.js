@@ -2,7 +2,7 @@ var yargs = require('yargs')
   , qc = require('qcnode')
   , QuickConnect = qc.QuickConnect
   , Tagalog = require('tagalog')
-  , startup = require('./lib/startup')
+  , startup = require('./startup')
   , _ = require('underscore')
 
 var log;
@@ -26,7 +26,7 @@ var args = yargs
     },
     'h': {
       alias: 'host',
-      default: 'macawtech.com'
+      default: '127.0.0.1'
     },
     'd': {
       alias: 'debug',

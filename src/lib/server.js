@@ -84,8 +84,7 @@ var Server_prototype = {
   },
   start: function(self, port, host){
     port = port || 80
-    host = port || "macawtech.com"
-
+    host = host || "localhost"
     var cb = serverHandler(this.qc, self.log)
 
     var _cb = self.logThis(cb, function(req, res){
@@ -116,7 +115,8 @@ function serverHandler(qc, log){
       })
     } catch(e){
       res.writeHead(404)
-      res.end('{"error":"not found"}')
+      var cleanE = e.toString().replace(/\"/g, "'")
+      res.end('{"error":"not found", "msg": "' + cleanE +'" }')
     }
   }
 }
