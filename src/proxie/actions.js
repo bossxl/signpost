@@ -19,14 +19,14 @@ exports.map = function(qc) {
     .valcf(function(data, qc) {
       if (data.url.query.type && (data.url.query.type === "digger" || data.url.query.type === "finder")) {
         data.type = data.url.query.type;
-        data.log("#request data #v0 #GET #heartbeat #name #" + data.type)
+        data.log("#request data #v0 #GET #heartbeat #type " + data.type)
       }
       return qc.STACK_CONTINUE
     })
     .valcf(function(data, qc) {
       if (data.url.query.name) {
         data.name = data.url.query.name;
-        data.log("#request data #v0 #GET #heartbeat #type #" + data.name)
+        data.log("#request data #v0 #GET #heartbeat #name " + data.name)
       }
       return qc.STACK_CONTINUE
     })
@@ -37,7 +37,7 @@ exports.map = function(qc) {
         data.res.end('accepted');
         log.write(now.toISOString() + "," + data.type + "," + data.name + "\n");
       } else {
-        data.res.end('hey')
+        data.res.end('hey no bueno', 404)
       }
       return qc.STACK_CONTINUE
     })
