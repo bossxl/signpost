@@ -1,4 +1,5 @@
 exports.map = function(qc){
+  var internal = qc.isolate('internal');
   var v0 = qc.isolate('v0')
   var v1 = qc.isolate('v1')
   var v2 = qc.isolate('v2')
