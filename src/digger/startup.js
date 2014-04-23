@@ -36,7 +36,7 @@ exports.map = function(qc) {
   qc.command('heartbeat')
     .dcf(function(data, qc) {
       var xhr = new XHR();
-      xhr.open("GET", "http://localhost/v0/heartbeat?name=" + data.name+ "type=digger");
+      xhr.open("GET", "http://localhost/v0/heartbeat?name=" + data.name+ "&type=digger");
       xhr.send();
       return qc.STACK_CONTINUE;
     });
