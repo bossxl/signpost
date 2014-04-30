@@ -5,15 +5,28 @@ exports.map = function(qc) {
   var v3 = qc.isolate('v3')
   var fs = require('fs');
   var u = require('url');
+  var path = require('path')
+  var send = require('send')
   var XHR = require('xmlhttprequest').XMLHttpRequest;
   var log = fs.createWriteStream('heartbeat.txt', {
     'flags': 'a'
   });
+
+  var mimeTypes = {
+    "html": "text/html",
+    "jpeg": "image/jpeg",
+    "jpg": "image/jpeg",
+    "png": "image/png",
+    "js": "text/javascript",
+    "css": "text/css"
+  };
+
+
   v0.isolate('points')
     .command('GET')
-    .valcf(function(data, qc){
+    .valcf(function(data, qc) {
       data.log("#request data #v0 #GET")
-      if(data.url.query.lat && data.url.query.long){
+      if (data.url.query.lat && data.url.query.long) {
         data.coor = [data.url.query.lat, data.url.query.long];
       } else {
         data.log("#request data #v0 #GET #BAD-REQUEST missing lat-long")
@@ -21,8 +34,8 @@ exports.map = function(qc) {
       }
       return qc.STACK_CONTINUE;
     })
-    .valcf(function(data, qc){
-      if(data.url.query.pt || data.url.query.points){
+    .valcf(function(data, qc) {
+      if (data.url.query.pt || data.url.query.points) {
         data.count = data.url.query.pt || data.url.query.points;
       } else {
         data.count = 10;
@@ -32,7 +45,7 @@ exports.map = function(qc) {
     .dcf(function(data, qc) {
       data.log("#request data #v0 #GET #OUTBOUND call finder");
       // data.res.end('hey')
-      if(!data.coor){
+      if (!data.coor) {
         return qc.STACK_CONTINUE
       } else {
         var xhr = new XHR();
@@ -48,8 +61,8 @@ exports.map = function(qc) {
         var url = u.format(urlObj);
         data.log("#request data #v0 #GET #URL " + url)
         xhr.open("GET", url);
-        xhr.onreadystatechange = function(){
-          if(this.readyState === 4){
+        xhr.onreadystatechange = function() {
+          if (this.readyState === 4) {
             qc.asyncStackContinue('finderData', this.responseText);
           }
         };
@@ -57,8 +70,8 @@ exports.map = function(qc) {
         return qc.WAIT_FOR_DATA;
       }
     })
-    .vcf(function(data, qc){
-      if(data.finderData){
+    .vcf(function(data, qc) {
+      if (data.finderData) {
         data.res.end(data.finderData);
       } else {
         data.res.end('complete - ' + ((data.error) ? "bad" : "good"));
@@ -100,4 +113,14 @@ exports.map = function(qc) {
       stream.pipe(data.res);
       return qc.STACK_CONTINUE
     })
+  v0.isolate('static')
+    .command("GET")
+    .dcf(function(data, qc) {
+      var root = path.normalize(__dirname + '../../../public')
+      console.log(data.req.url);
+      send(data.req, data.req.url, {root: root})
+        .pipe(data.res)
+      return qc.STACK_CONTINUE;
+    })
+   
 }
