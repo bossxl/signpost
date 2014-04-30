@@ -5,10 +5,10 @@ exports.map = function(qc){
   var v3 = qc.isolate('v3')
 
   v0.isolate('points')
-    .command('GAT')
+    .command('GET')
       .dcf(function(data, qc){
         data.log("#request data #v0 #GET")
-        data.res.end('hey')
+        data.res.end('hey from finder')
         return qc.STACK_CONTINUE
       })
 }

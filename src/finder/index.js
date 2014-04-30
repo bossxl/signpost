@@ -32,7 +32,7 @@ var args = yargs
   .options({
     'p': {
       alias: 'port',
-      default: 8080
+      default: 9090
     },
     'h': {
       alias: 'host',

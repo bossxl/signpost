@@ -13,7 +13,6 @@ exports.map = function(qc) {
     .command('GET')
     .valcf(function(data, qc){
       data.log("#request data #v0 #GET")
-      console.log(data.url.query);
       if(data.url.query.lat && data.url.query.long){
         data.coor = [data.url.query.lat, data.url.query.long];
       } else {
@@ -50,12 +49,8 @@ exports.map = function(qc) {
         data.log("#request data #v0 #GET #URL " + url)
         xhr.open("GET", url);
         xhr.onreadystatechange = function(){
-          if(this.status === 200 && this.responseText && this.readyState === 4){
-            data.diggerData = this.responseText;
-            qc.asyncStackContinue();
-          } else if(this.readyState === 4) {
-            data.error = true;
-            qc.asyncStackContinue();
+          if(this.readyState === 4){
+            qc.asyncStackContinue('finderData', this.responseText);
           }
         };
         xhr.send();
@@ -63,7 +58,11 @@ exports.map = function(qc) {
       }
     })
     .vcf(function(data, qc){
-      data.res.end('complete - ' + ((data.error) ? "bad" : "good"));
+      if(data.finderData){
+        data.res.end(data.finderData);
+      } else {
+        data.res.end('complete - ' + ((data.error) ? "bad" : "good"));
+      }
       return qc.STACK_CONTINUE;
     });
   v0.isolate('heartbeat')
