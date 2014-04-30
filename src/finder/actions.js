@@ -5,9 +5,9 @@ exports.map = function(qc){
   var v3 = qc.isolate('v3')
 
   v0.isolate('points')
-    .command('POST')
+    .command('GAT')
       .dcf(function(data, qc){
-        data.log("#request data #v0 #POST")
+        data.log("#request data #v0 #GET")
         data.res.end('hey')
         return qc.STACK_CONTINUE
       })
