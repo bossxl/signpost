@@ -13,18 +13,10 @@ exports.map = function(qc) {
     'flags': 'a'
   });
 
-  var mimeTypes = {
-    "html": "text/html",
-    "jpeg": "image/jpeg",
-    "jpg": "image/jpeg",
-    "png": "image/png",
-    "js": "text/javascript",
-    "css": "text/css"
-  };
-
   qc.isolate('root')
   .command("GET")
     .dcf(function(data, qc){
+      data.log("#reroute for #root file");
       this.run(['v0', 'static', 'GET'], data);
       return qc.STACK_CONTINUE;
     })
@@ -147,11 +139,11 @@ exports.map = function(qc) {
   v0.isolate('static')
     .command("GET")
     .dcf(function(data, qc) {
-      var root = path.normalize(__dirname + '../../../public')
+      data.log("#request for #static files");
+      var root = path.normalize(__dirname + '../../../public/v0/static/app')
       send(data.req, data.req.url, {
         root: root
-      })
-        .pipe(data.res)
+      }).pipe(data.res)
       return qc.STACK_CONTINUE;
     })
 

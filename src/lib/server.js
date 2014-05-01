@@ -121,9 +121,19 @@ function serverHandler(qc, log){
         res: res
       })
     } catch(e){
-      res.writeHead(404)
-      var cleanE = e.toString().replace(/\"/g, "'")
-      res.end('{"error":"not found", "msg": "' + cleanE +'" }')
+      if(req.method === "GET"){
+        qc.run(['root', 'GET'], {
+          log: log,
+          url: url,
+          path: path,
+          req: req,
+          res: res
+        })
+      } else {
+        res.writeHead(404)
+        var cleanE = e.toString().replace(/\"/g, "'")
+        res.end('{"error":"not found", "msg": "' + cleanE +'" }')
+      }
     }
   }
 }
