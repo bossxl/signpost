@@ -8,7 +8,7 @@ exports.map = function(qc){
     .command('POST')
       .dcf(function(data, qc){
         data.log("#request data #v0 #POST")
-        data.res.end('hey')
+        data.res.end('hey from digger')
         return qc.STACK_CONTINUE
       })
 }

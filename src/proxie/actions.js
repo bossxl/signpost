@@ -3,6 +3,7 @@ exports.map = function(qc) {
   var v1 = qc.isolate('v1')
   var v2 = qc.isolate('v2')
   var v3 = qc.isolate('v3')
+  var http = require('http')
   var fs = require('fs');
   var u = require('url');
   var path = require('path')
@@ -78,6 +79,32 @@ exports.map = function(qc) {
       }
       return qc.STACK_CONTINUE;
     });
+  v0.isolate('points')
+    .command('POST')
+    .dcf(function(data, qc) {
+      data.log("#request data #v0 #POST #OUTBOUND call digger started");
+      var options = {};
+      options.host = "localhost";
+      options.port = "8080";
+      options.method = "POST";
+      options.path = "/v0/points";
+      data.req.pause();
+      var digger = http.request(options, function(res) {
+        res.pipe(data.res)
+        res.on('end', function() {
+          qc.asyncStackContinue();
+        })
+      });
+      data.req.pipe(digger, {
+        end: true
+      });
+      data.req.resume();
+      return qc.WAIT_FOR_DATA;
+    })
+    .dcf(function(data, qc) {
+      data.log("#request data #v0 #POST #OUTBOUND call digger complete");
+      return qc.STACK_CONTINUE;
+    })
   v0.isolate('heartbeat')
     .command('GET')
     .valcf(function(data, qc) {
@@ -117,10 +144,11 @@ exports.map = function(qc) {
     .command("GET")
     .dcf(function(data, qc) {
       var root = path.normalize(__dirname + '../../../public')
-      console.log(data.req.url);
-      send(data.req, data.req.url, {root: root})
+      send(data.req, data.req.url, {
+        root: root
+      })
         .pipe(data.res)
       return qc.STACK_CONTINUE;
     })
-   
+
 }
