@@ -22,6 +22,12 @@ exports.map = function(qc) {
     "css": "text/css"
   };
 
+  qc.isolate('root')
+  .command("GET")
+    .dcf(function(data, qc){
+      this.run(['v0', 'static', 'GET'], data);
+      return qc.STACK_CONTINUE;
+    })
 
   v0.isolate('points')
     .command('GET')
@@ -88,7 +94,6 @@ exports.map = function(qc) {
       options.port = "8080";
       options.method = "POST";
       options.path = "/v0/points";
-      data.req.pause();
       var digger = http.request(options, function(res) {
         res.pipe(data.res)
         res.on('end', function() {
@@ -98,7 +103,6 @@ exports.map = function(qc) {
       data.req.pipe(digger, {
         end: true
       });
-      data.req.resume();
       return qc.WAIT_FOR_DATA;
     })
     .dcf(function(data, qc) {

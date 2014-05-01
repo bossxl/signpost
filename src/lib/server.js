@@ -108,7 +108,9 @@ function serverHandler(qc, log){
     var url = u.parse(req.url, true)
       , path = url.pathname.split('/').filter(function(v){return v})
       , action = [path.shift(), path.shift()]
-
+      if(path.length === 0){
+        action = ['root']
+      }
     action.push(req.method)
     try {
       qc.run(action, {
