@@ -8,14 +8,14 @@ exports.map = function(qc) {
   var u = require('url');
   var path = require('path')
   var send = require('send')
-  var XHR = require('xmlhttprequest').XMLHttpRequest;
+  var querystring = require('querystring')
   var log = fs.createWriteStream('heartbeat.txt', {
     'flags': 'a'
   });
 
   qc.isolate('root')
-  .command("GET")
-    .dcf(function(data, qc){
+    .command("GET")
+    .dcf(function(data, qc) {
       data.log("#reroute for #root file");
       this.run(['v0', 'static', 'GET'], data);
       return qc.STACK_CONTINUE;
@@ -43,38 +43,32 @@ exports.map = function(qc) {
     })
     .dcf(function(data, qc) {
       data.log("#request data #v0 #GET #OUTBOUND call finder");
+      data.error = true;
       // data.res.end('hey')
       if (!data.coor) {
         return qc.STACK_CONTINUE
       } else {
-        var xhr = new XHR();
-        var urlObj = data.url;
-        urlObj.hostname = "localhost";
-        urlObj.port = "9090";
-        urlObj.protocol = "http";
-        delete urlObj.query;
-        urlObj.query = {};
-        urlObj.query.coor = data.coor;
-        delete urlObj.search;
-        delete urlObj.host;
-        var url = u.format(urlObj);
-        data.log("#request data #v0 #GET #URL " + url)
-        xhr.open("GET", url);
-        xhr.onreadystatechange = function() {
-          if (this.readyState === 4) {
-            qc.asyncStackContinue('finderData', this.responseText);
-          }
-        };
-        xhr.send();
+        var options = {};
+        options.host = "localhost";
+        options.port = "9090";
+        options.method = "GET";
+        options.path = "/v0/points/?" + querystring.stringify({
+          coor: data.coor
+        });
+        var finder = http.request(options, function(res) {
+          res.pipe(data.res)
+          res.on('end', function() {
+            qc.asyncStackContinue('error', false);
+          })
+        });
+        data.req.pipe(finder, {
+          end: true
+        });
         return qc.WAIT_FOR_DATA;
       }
     })
     .vcf(function(data, qc) {
-      if (data.finderData) {
-        data.res.end(data.finderData);
-      } else {
-        data.res.end('complete - ' + ((data.error) ? "bad" : "good"));
-      }
+      data.log("#request data #v0 #POST #OUTBOUND call finder complete");
       return qc.STACK_CONTINUE;
     });
   v0.isolate('points')

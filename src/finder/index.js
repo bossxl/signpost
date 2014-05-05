@@ -65,7 +65,6 @@ var pulse = function() {
     log: log.debug.bind(log)
   })
   heartbeat.on('end', function() {
-    console.log("heartbeat emit!");
     setTimeout(pulse, 5000);
   })
 }

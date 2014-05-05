@@ -9,6 +9,9 @@ exports.map = function(qc) {
     })
     .dcf(function(data, qc) {
       //create server
+      if(!data.args.dir){
+        data.args.dir = __dirname;
+      }
       var server = new Server(data.log)
       server.init(data.args)
       data.server = server

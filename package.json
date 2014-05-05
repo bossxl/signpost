@@ -7,12 +7,15 @@
     "test": "tests"
   },
   "dependencies": {
-    "grunt": "~0.4.4"
+    "grunt": "~0.4.4",
+    "gulp-nodemon": "^1.0.2",
+    "gulp-spawn": "^0.3.0"
   },
   "devDependencies": {
     "grunt": "^0.4.4",
     "grunt-contrib-uglify": "^0.4.0",
-    "grunt-shell-spawn": "^0.3.0"
+    "grunt-shell-spawn": "^0.3.0",
+    "gulp": "^3.6.2"
   },
   "scripts": {
     "test": "grunt tests"
