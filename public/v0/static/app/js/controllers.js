@@ -50,4 +50,17 @@ angular.module('myApp.controllers', [])
         })
       }
     }
+  ]).controller('Grid', ['$scope', '$modal',
+    function($scope, $modal) {
+      $scope.build = function(num) {
+        return new Array(num);
+      }
+      $scope.squareData=function(x,y){
+        $modal.open({
+          templateUrl : "partials/grid-info.html",
+          scope : $scope
+        });
+      }
+
+    }
   ]);

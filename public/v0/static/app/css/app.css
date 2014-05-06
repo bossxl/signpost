@@ -28,3 +28,16 @@
   content: "";
   padding: 0;
 }
+.paper-row{
+  height: 1cm;
+  margin-bottom: 1px;
+}
+.paper-row .paper-square {
+  height: 1cm;
+  position: relative;
+  overflow: hidden;
+  width: 1cm;
+  background-color: black;
+  display: inline-block;
+  margin-right: 1px;
+}

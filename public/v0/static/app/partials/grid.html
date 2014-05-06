@@ -1,0 +1,6 @@
+<h2>Grid</h2>
+<div class="paper-grid">
+  <div class="paper-row paper-row-{{$index}}" ng-repeat="row in build(10) track by $index" class="paper-row">
+    <div class="paper-square paper-col paper-col-{{$index}}" ng-repeat="col in build(10) track by $index" ng-click="squareData(1,1)">{{$index}}</div>
+  </div>
+</div>
