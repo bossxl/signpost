@@ -7,7 +7,7 @@ var gulp = require('gulp'),
   basepath = path.normalize(__dirname + '/../src/'),
   proxie, digger, finder;
 gulp.task('proxie', function() {
-  proxie = spawn('node', [basepath + 'proxie/index.js'], {
+  proxie = spawn('node', [basepath + 'proxie/index.js', '-p', 7070], {
     stdio: 'inherit'
   })
   var watcherProxie = gulp.watch(basepath + 'proxie/**/*.js', ['proxie']);

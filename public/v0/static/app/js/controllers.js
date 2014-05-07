@@ -19,7 +19,7 @@ angular.module('myApp.controllers', [])
         $scope.coor = {};
       }
       $scope.submit = function(coor) {
-        var url = "http://localhost/v0/points?lat=%lat&long=%long";
+        var url = "v0/points?lat=%lat&long=%long";
         url = url.replace("%lat", coor.lat);
         url = url.replace("%long", coor.long);
         $http.get(url).success(function($data) {
@@ -33,11 +33,11 @@ angular.module('myApp.controllers', [])
   .controller('Digger', ['$scope', '$http',
     function($scope, $http) {
       $scope.submit = function(point) {
-        console.log("http://localhost/v0/points");
+        console.log("v0/points");
         console.log(point);
         $http({
           method: 'POST',
-          url: "http://localhost/v0/points",
+          url: "v0/points",
           data: point,
           headers: {
             'Content-Type': 'application/json'
