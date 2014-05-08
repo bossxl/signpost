@@ -4,6 +4,7 @@
 var gulp = require('gulp'),
   path = require('path'),
   spawn = require('child_process').spawn,
+  exec = require('child_process').exec,
   basepath = path.normalize(__dirname + '/../src/'),
   proxie, digger, finder;
 gulp.task('proxie', function() {
@@ -48,4 +49,43 @@ gulp.task('develop', ['proxie', 'digger', 'finder'], function() {
   	digger.kill()
     console.log('File ' + event.path + ' was ' + event.type + ', Restarting Everything. Lib files modified');
   });
+});
+gulp.task('proxieDevSet', function(cb){
+  var npm = exec('npm install',{
+    cwd: path.normalize(__dirname + "/../src/proxie/")
+  }, function(error, stdout, stderr){
+    console.log(stdout);
+    if(error){
+      console.log(stderr)
+      console.log(error)
+    }
+    cb();
+  });
+})
+gulp.task('diggerDevSet', function(cb){
+  var npm = exec('npm install',{
+    cwd: path.normalize(__dirname + "/../src/digger/")
+  }, function(error, stdout, stderr){
+    console.log(stdout);
+    if(error){
+      console.log(stderr)
+      console.log(error)
+    }
+    cb();
+  });
+})
+gulp.task('finderDevSet', function(cb){
+  var npm = exec('npm install',{
+    cwd: path.normalize(__dirname + "/../src/finder/")
+  }, function(error, stdout, stderr){
+    console.log(stdout);
+    if(error){
+      console.log(stderr)
+      console.log(error)
+    }
+    cb();
+  });
+})
+gulp.task('setupDev', ['proxieDevSet','finderDevSet', 'diggerDevSet'], function(){
+  console.log("OK... run develop!")
 });
