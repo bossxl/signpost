@@ -52,14 +52,35 @@ angular.module('myApp.controllers', [])
     }
   ]).controller('Grid', ['$scope', '$modal',
     function($scope, $modal) {
-      $scope.build = function(num) {
-        return new Array(num);
-      }
-      $scope.squareData=function(x,y){
+      $scope.height = 10;
+      $scope.width = 10;
+      $scope.rows = new Array($scope.height);
+      $scope.cols = new Array($scope.width);
+      $scope.squareData = function(x, y) {
+        $scope.x = x;
+        $scope.y = y;
+        $(".paper-current").text("");
+        $(".paper-current").removeClass("paper-current");
+        $(".paper-row-" + x + " .paper-col-" + y).addClass("paper-complete paper-current");
+        $(".paper-row-" + x + " .paper-col-" + y).text("x");
         $modal.open({
-          templateUrl : "partials/grid-info.html",
-          scope : $scope
+          templateUrl: "partials/grid-info.html",
+          scope: $scope
         });
+      }
+      $scope.updateGrid = function() {
+        var heightDiff = $scope.height - $scope.rows.length;
+        if( heightDiff > 0){
+          $scope.rows = $scope.rows.concat(new Array(heightDiff))
+        } else if(heightDiff < 0){
+          $scope.rows.splice(0, (heightDiff * -1))
+        }
+        var widthDiff = $scope.width - $scope.cols.length;
+        if( widthDiff > 0){
+          $scope.cols = $scope.cols.concat(new Array(widthDiff))
+        } else if(widthDiff < 0){
+          $scope.cols.splice(0, (widthDiff * -1))
+        }
       }
 
     }

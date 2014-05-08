@@ -30,7 +30,7 @@
 }
 .paper-row{
   height: 1cm;
-  margin-bottom: 1px;
+  overflow: auto;
 }
 .paper-row .paper-square {
   height: 1cm;
@@ -39,5 +39,9 @@
   width: 1cm;
   background-color: black;
   display: inline-block;
-  margin-right: 1px;
+  margin: 1px;
+}
+.paper-grid .paper-row .paper-square.paper-complete {
+  background-color: white;
+  border: 1px solid black;
 }

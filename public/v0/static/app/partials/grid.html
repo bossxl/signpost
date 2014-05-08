@@ -1,6 +1,16 @@
 <h2>Grid</h2>
+<h3>Size</h3>
+<ul>
+  <li>Rows
+    <input type="text" ng-model="height" />
+  </li>
+  <li>Columns
+    <input type="text" ng-model="width" />
+  </li>
+  <li><button ng-click="updateGrid()">Update</button></li>
+</ul>
 <div class="paper-grid">
-  <div class="paper-row paper-row-{{$index}}" ng-repeat="row in build(10) track by $index" class="paper-row">
-    <div class="paper-square paper-col paper-col-{{$index}}" ng-repeat="col in build(10) track by $index" ng-click="squareData(1,1)">{{$index}}</div>
+  <div class="paper-row paper-row-{{$index}}" ng-repeat="row in rows track by $index" class="paper-row">
+    <div class="paper-square paper-col paper-col-{{$index}}" ng-repeat="col in cols track by $index" ng-click="squareData($parent.$index, $index)">{{$index}}</div>
   </div>
 </div>
