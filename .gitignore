@@ -4,6 +4,8 @@
 # Logs
 logs
 *.log
+*/heatbeat.txt
+*-workspace
 
 # Runtime data
 pids
