@@ -29,17 +29,19 @@
   padding: 0;
 }
 .paper-row{
-  height: 1cm;
-  overflow: auto;
+  height: 31px;
+  overflow: hidden;
 }
 .paper-row .paper-square {
-  height: 1cm;
+  height: 30px;
   position: relative;
   overflow: hidden;
-  width: 1cm;
+  width: 30px;
   background-color: black;
   display: inline-block;
-  margin: 1px;
+  margin: 1px .5px;
+  line-height: 30px;
+  text-align: center;
 }
 .paper-grid .paper-row .paper-square.paper-complete {
   background-color: white;
