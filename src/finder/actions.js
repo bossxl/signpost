@@ -1,4 +1,4 @@
-exports.map = function(qc){
+exports.map = function(qc) {
   var v0 = qc.isolate('v0')
   var v1 = qc.isolate('v1')
   var v2 = qc.isolate('v2')
@@ -6,9 +6,9 @@ exports.map = function(qc){
 
   v0.isolate('points')
     .command('GET')
-      .dcf(function(data, qc){
+    .dcf(function(data, qc) {
         data.log("#request data #v0 #GET")
-        data.res.end('hey from finder')
-        return qc.STACK_CONTINUE
-      })
+        data.res.end('hey from finder [' + data.url.query.coor + ']');
+      return qc.STACK_CONTINUE
+  })
 }

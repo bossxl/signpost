@@ -46,6 +46,22 @@ exports.map = function(qc) {
       data.error = true;
       // data.res.end('hey')
       if (!data.coor) {
+        data.log("#request form data #v0 #GET")
+        var formJson = {
+          response: 'OK',
+          fields: [{
+            key: "lat",
+            type: "text",
+            "label": "Latitude",
+            required: true
+          }, {
+            key: "long",
+            type: "text",
+            "label": "Longitude",
+            required: true
+          }]
+        }
+        data.res.end(JSON.stringify(formJson));
         return qc.STACK_CONTINUE
       } else {
         var options = {};

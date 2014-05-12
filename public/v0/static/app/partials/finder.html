@@ -1,8 +1,11 @@
 <h2>Finder</h2>
 <div ng-hide="!error" class="alert alert-danger">
-{{error}}
+  {{error}}
 </div>
-<form name="finder" class="form-horizontal" novalidate>
+<div ng-hide="!msg" class="alert alert-success">
+  {{msg}}
+</div>
+<!-- <form name="finder" class="form-horizontal" novalidate>
 	<div class="form-group">
 		<label for="lat" class="control-label" >Latitude</label>
 		<input type="text" name="lat" ng-model="coor.lat" class="form-control" required>
@@ -15,8 +18,8 @@
 		<button ng-click="submit(coor)" class="btn btn-default" ng-disabled="finder.$invalid">Submit</button>
 		<button ng-click="reset()" class="btn btn-default">Reset</button>
 	</div>
-</form>
+</form> -->
+<div id="form"></div>
 <div ng-hide="!locations">
-	{{locations}}
+  {{locations}}
 </div>
-

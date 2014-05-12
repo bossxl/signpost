@@ -13,19 +13,76 @@ angular.module('myApp.controllers', [])
 
     }
   ])
-  .controller('Finder', ['$scope', '$http',
-    function($scope, $http) {
-      $scope.reset = function() {
-        $scope.coor = {};
+  .controller('Finder', ['$scope', '$http', '$compile',
+    function($scope, $http, $compile) {
+      var url = 'v0/points';
+      $http.get(url).success(function($data) {
+        console.log($data);
+        var buttons = [{
+          ng: ['ng-click="submit(coor)"', 'ng-disabled="finder.$invalid"'],
+          class: ['btn', 'btn-default'],
+          text: 'Submit'
+        }, {
+          ng: ['ng-click="reset()"'],
+          class: ['btn', 'btn-default'],
+          text: 'Reset'
+        }]
+        $scope.createForm({
+          modelName: 'coor',
+          cssLocation: '#form'
+        }, $data.fields, buttons);
+      }).error(function() {
+        $scope.error = 'Unable to complete request';
+      })
+      $scope.createForm = function(opt, elements, buttons) {
+        if (!elements.length) {
+          throw 'Elements must be an array';
+        }
+        var modelName = (opt.modelName) ? opt.modelName + "." : ""
+        var html = '<form name="finder" class="form-horizontal" novalidate>';
+        for (var i = 0; i < elements.length; i++) {
+          var element = elements[i];
+          var elementHTML = '<div class="form-group">'
+          elementHTML += '<label for="' + element.key + '" class="control-label">' + element.label + '</label>'
+          elementHTML += '<input type="' + element.type + '" name="' + element.key + '" ng-model="' + modelName + element.key + '" class="form-control" ' + ((element.required) ? 'required' : '') + '>'
+          elementHTML += '</div>'
+          html += elementHTML
+        }
+        if (buttons) {
+          html += '<div class="form-group">';
+          for (var i = 0; i < buttons.length; i++) {
+            var button = buttons[i];
+            var buttonHTML = '<button';
+            if (button.class) {
+              buttonHTML += ' class="' + button.class.join(' ') + '" ';
+            }
+            if (button.ng) {
+              buttonHTML += button.ng.join(' ') + ' ';
+            }
+            buttonHTML += '>' + button.text + '</button>'
+            html += buttonHTML;
+          }
+          html += '</div>'
+        }
+        html += '</form>'
+        var compiledHtml = $compile(html)($scope);
+        $(opt.cssLocation).append(compiledHtml);
       }
       $scope.submit = function(coor) {
-        var url = "v0/points?lat=%lat&long=%long";
-        url = url.replace("%lat", coor.lat);
-        url = url.replace("%long", coor.long);
-        $http.get(url).success(function($data) {
+        $scope.error = null;
+        $scope.msg = null;
+        if (!(coor && coor.lat && coor.long)) {
+          $scope.error = 'Missing Form Elements';
+          return
+        }
+        var fullurl = url + '?lat=%lat&long=%long';
+        fullurl = fullurl.replace('%lat', coor.lat);
+        fullurl = fullurl.replace('%long', coor.long);
+        $http.get(fullurl).success(function($data) {
+          $scope.msg = 'Found Data';
           $scope.locations = $data;
         }).error(function() {
-          $scope.error = "Finder failed. Sorry";
+          $scope.error = 'Finder failed. Sorry';
         })
       }
     }
@@ -50,7 +107,7 @@ angular.module('myApp.controllers', [])
         })
       }
     }
-  ]).controller('Grid', ['$scope', '$modal','$http',
+  ]).controller('Grid', ['$scope', '$modal', '$http',
     function($scope, $modal, $http) {
       $scope.height = 10;
       $scope.width = 10;
